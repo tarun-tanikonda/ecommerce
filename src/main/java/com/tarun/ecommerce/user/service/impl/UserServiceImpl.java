@@ -3,6 +3,7 @@ package com.tarun.ecommerce.user.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tarun.ecommerce.common.exception.EmailAlreadyExistsException;
@@ -21,9 +22,11 @@ import com.tarun.ecommerce.user.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,7 +34,14 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsByEmail(userRegisterRequest.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
+        //encoding the password before saving the user
+        System.out.println("PasswordEncoder: " + passwordEncoder.getClass().getName());
         User user = UserMapper.toEntity(userRegisterRequest);
+        System.out.println("Before Encoding: " + user.getPassword());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        System.out.println("After Encoding: " + encodedPassword);
+        user.setPassword(encodedPassword);
+
         user.setRole(Role.CUSTOMER);
         user.setStatus(UserStatus.ACTIVE);
         user.setEmailVerified(false);
@@ -51,5 +61,5 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAll();
         return users.stream().map(UserMapper::toResponse).collect(Collectors.toList());
     }
-    
+
 }

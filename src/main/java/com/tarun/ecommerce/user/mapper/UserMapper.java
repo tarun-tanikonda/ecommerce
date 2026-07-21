@@ -10,15 +10,11 @@ public final class UserMapper {
     private UserMapper() {
     }
 
-    /**
-     * Converts UserRegisterRequest to User Entity.
-     */
+    // Converts UserRegisterRequest to User Entity.
     public static User toEntity(UserRegisterRequest userRegisterRequest) {
-
-        // if (userRegisterRequest == null) {
-        //     return null;
-        // }
-
+        if (userRegisterRequest == null) {
+            return null;
+        }
         User user = new User();
 
         user.setFirstName(userRegisterRequest.getFirstName());
@@ -30,9 +26,8 @@ public final class UserMapper {
         return user;
     }
 
-    /**
-     * Converts User Entity to UserRegisterResponse.
-     */
+
+    // Converts User Entity to UserRegisterResponse.
     public static UserRegisterResponse toResponse(User user) {
 
         if (user == null) {
@@ -41,7 +36,7 @@ public final class UserMapper {
 
         UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
 
-        userRegisterResponse.setUserId(user.getId());
+        userRegisterResponse.setUserId(user.getUserId());
         userRegisterResponse.setFirstName(user.getFirstName());
         userRegisterResponse.setLastName(user.getLastName());
         userRegisterResponse.setEmail(user.getEmail());

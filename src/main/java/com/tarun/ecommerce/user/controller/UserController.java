@@ -21,6 +21,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -30,8 +31,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserRegisterResponse>> registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
         UserRegisterResponse response = userService.registerUser(userRegisterRequest);
-        ApiResponse<UserRegisterResponse> apiResponse =
-            ApiResponse.<UserRegisterResponse>builder()
+        ApiResponse<UserRegisterResponse> apiResponse = ApiResponse.<UserRegisterResponse>builder()
                     .success(true)
                     .message("User registered successfully.")
                     .data(response)
@@ -50,4 +50,5 @@ public class UserController {
         List<UserRegisterResponse> responseList = userService.getAllUsers();
         return ResponseEntity.ok(responseList);
     }
+    
 }

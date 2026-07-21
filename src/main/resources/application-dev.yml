@@ -14,5 +14,13 @@ spring:
       hibernate:
         format_sql: true
 
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: TRACE
+
+jwt:
+  secret: 4v8y/B?E(H+MbQeThWmZq4t7w!z%C*F-JaNdRgUkXp2s5v8y
+  expiration: 86400000
+
 server:
   port: 8080

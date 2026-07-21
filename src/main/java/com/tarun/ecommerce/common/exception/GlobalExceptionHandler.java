@@ -20,38 +20,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(
-            UserNotFoundException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse response = new ErrorResponse();
-
-        response.setTimestamp(LocalDateTime.now());
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-        response.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
-        response.setMessage(ex.getMessage());
-        response.setPath(request.getRequestURI());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(
-            EmailAlreadyExistsException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse response = new ErrorResponse();
-
-        response.setTimestamp(LocalDateTime.now());
-        response.setStatus(HttpStatus.CONFLICT.value());
-        response.setError(HttpStatus.CONFLICT.getReasonPhrase());
-        response.setMessage(ex.getMessage());
-        response.setPath(request.getRequestURI());
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(
             Exception ex,
@@ -87,5 +55,53 @@ public class GlobalExceptionHandler {
                 request.getRequestURI());
 
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(
+            UserNotFoundException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse();
+
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        response.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+        response.setMessage(ex.getMessage());
+        response.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(
+            EmailAlreadyExistsException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse();
+
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.CONFLICT.value());
+        response.setError(HttpStatus.CONFLICT.getReasonPhrase());
+        response.setMessage(ex.getMessage());
+        response.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(
+            InvalidCredentialsException ex,
+            HttpServletRequest request){
+        
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        errorResponse.setError("Unauthorized");
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+
     }
 }
